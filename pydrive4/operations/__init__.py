@@ -9,10 +9,12 @@ from pydrive4.operations.base import BaseOperationsMixin
 from pydrive4.operations.files import FileOperationsMixin
 from pydrive4.operations.folders import FolderOperationsMixin
 from pydrive4.operations.bulk import BulkOperationsMixin
+from pydrive4.operations.sharing import SharingOperationsMixin
 
 __all__ = [
     "BaseOperationsMixin",
     "FileOperationsMixin",
     "FolderOperationsMixin",
     "BulkOperationsMixin",
+    "SharingOperationsMixin",
 ]
