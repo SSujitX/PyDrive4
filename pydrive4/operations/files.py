@@ -114,7 +114,7 @@ class FileOperationsMixin:
             return self._handle_http_error(e)
 
     def upload_file(
-        self, file_path: str, folder_id: Optional[str] = None, overwrite: bool = False
+        self, file_path: str, folder_id: Optional[str] = None, overwrite: bool = False, public: bool = False
     ) -> Dict[str, Any]:
         """
         Upload a file to Google Drive.
@@ -123,6 +123,7 @@ class FileOperationsMixin:
             file_path: Local path to the file to upload.
             folder_id: Optional destination folder ID. None for root.
             overwrite: If True, overwrite existing file with same name.
+            public: If True, make file publicly accessible (anyone with link).
 
         Returns:
             Dict containing:
@@ -130,10 +131,15 @@ class FileOperationsMixin:
                 - file: Uploaded file metadata dict
                 - id: ID of the uploaded file
                 - overwritten: bool indicating if an existing file was replaced
+                - link: Shareable link (if public=True)
 
         Example:
+            # Private upload
             result = drive.upload_file("document.pdf", folder_id="abc123")
-            print(f"Uploaded file ID: {result['id']}")
+            
+            # Public upload (anyone with link can view)
+            result = drive.upload_file("document.pdf", public=True)
+            print(f"Share link: {result['link']}")
         """
         try:
             path = Path(file_path)
@@ -175,7 +181,7 @@ class FileOperationsMixin:
                         fileId=existing_file_id,
                         body=file_metadata,
                         media_body=media,
-                        fields=DEFAULT_FILE_FIELDS,
+                        fields=DEFAULT_FILE_FIELDS + ", webViewLink",
                     )
                     .execute()
                 )
@@ -186,17 +192,24 @@ class FileOperationsMixin:
                     .create(
                         body=file_metadata,
                         media_body=media,
-                        fields=DEFAULT_FILE_FIELDS,
+                        fields=DEFAULT_FILE_FIELDS + ", webViewLink",
                     )
                     .execute()
                 )
 
-            return {
+            result = {
                 "success": True,
                 "file": file,
                 "id": file["id"],
                 "overwritten": overwritten,
             }
+
+            # Make public if requested
+            if public:
+                self._make_public(file["id"])
+                result["link"] = file.get("webViewLink")
+
+            return result
         except HttpError as e:
             return self._handle_http_error(e)
         except Exception as e:

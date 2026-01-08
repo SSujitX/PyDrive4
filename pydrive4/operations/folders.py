@@ -158,7 +158,7 @@ class FolderOperationsMixin:
             return self._handle_http_error(e)
 
     def create_folder(
-        self, folder_name: str, parent_id: Optional[str] = None
+        self, folder_name: str, parent_id: Optional[str] = None, public: bool = False
     ) -> Dict[str, Any]:
         """
         Create a new folder.
@@ -166,16 +166,22 @@ class FolderOperationsMixin:
         Args:
             folder_name: Name for the new folder.
             parent_id: Optional parent folder ID. None for root.
+            public: If True, make folder publicly accessible (anyone with link).
 
         Returns:
             Dict containing:
                 - success: bool
                 - folder: Created folder metadata dict
                 - id: ID of the created folder
+                - link: Shareable link (if public=True)
 
         Example:
+            # Private folder
             result = drive.create_folder("New Project")
-            print(f"Created folder with ID: {result['id']}")
+            
+            # Public folder
+            result = drive.create_folder("Shared Files", public=True)
+            print(f"Share link: {result['link']}")
         """
         try:
             file_metadata = {
@@ -188,15 +194,22 @@ class FolderOperationsMixin:
 
             folder = (
                 self._service.files()
-                .create(body=file_metadata, fields=DEFAULT_FILE_FIELDS)
+                .create(body=file_metadata, fields=DEFAULT_FILE_FIELDS + ", webViewLink")
                 .execute()
             )
 
-            return {
+            result = {
                 "success": True,
                 "folder": folder,
                 "id": folder["id"],
             }
+
+            # Make public if requested
+            if public:
+                self._make_public(folder["id"])
+                result["link"] = folder.get("webViewLink")
+
+            return result
         except HttpError as e:
             return self._handle_http_error(e)
 

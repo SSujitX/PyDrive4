@@ -315,13 +315,16 @@ GoogleDrive(
 | `search_files(query, folder_id)`          | Search files by name      | `{"success": bool, "files": list, "count": int}`   |
 | `search_folders(query, parent_id)`        | Search folders by name    | `{"success": bool, "folders": list, "count": int}` |
 | `get_folder(name, parent_id)`             | Get folder by exact name  | `{"success": bool, "folder": dict, "found": bool}` |
-| `create_folder(name, parent_id)`          | Create a folder           | `{"success": bool, "folder": dict, "id": str}`     |
-| `upload_file(path, folder_id, overwrite)` | Upload a file             | `{"success": bool, "file": dict, "id": str}`       |
+| `create_folder(name, parent_id, public)`  | Create a folder           | `{"success": bool, "id": str, "link": str}`        |
+| `upload_file(path, folder_id, overwrite, public)` | Upload a file     | `{"success": bool, "id": str, "link": str}`        |
 | `download_file(file_id, output_path)`     | Download a file           | `{"success": bool, "path": str, "size": int}`      |
 | `upload_folder(path, parent_id)`          | Upload folder recursively | `{"success": bool, "files_uploaded": int}`         |
+| `share(file_id, public, email, role)`     | Share file/folder         | `{"success": bool, "link": str}`                   |
+| `unshare(file_id, email, remove_public)`  | Remove sharing            | `{"success": bool, "removed_count": int}`          |
+| `list_permissions(file_id)`               | List who has access       | `{"success": bool, "permissions": list}`           |
+| `get_share_link(file_id)`                 | Get shareable link        | `{"success": bool, "link": str, "is_public": bool}`|
 | `delete_file(file_id, permanently)`       | Delete/trash a file       | `{"success": bool}`                                |
 | `delete_folder(folder_id, permanently)`   | Delete/trash a folder     | `{"success": bool}`                                |
-| `delete_item(item_id, permanently)`       | Delete/trash any item     | `{"success": bool}`                                |
 
 ---
 
