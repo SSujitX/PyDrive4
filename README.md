@@ -7,6 +7,22 @@ A simplified Google Drive API v3 wrapper library for Python.
 
 PyDrive4 makes it easy to interact with Google Drive from Python. It wraps the `google-api-python-client` to provide a clean, intuitive API for common file and folder operations.
 
+## Table of Contents
+
+- [Features](#features)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Authentication Methods](#authentication-methods)
+  - [Method 1: Application Default Credentials](#method-1-application-default-credentials-recommended)
+  - [Method 2: Service Account](#method-2-service-account-for-automation)
+  - [Method 3: OAuth2 Client](#method-3-oauth2-client-credentials-recommended-for-personal-use)
+- [API Reference](#api-reference)
+- [Usage Examples](#usage-examples)
+- [Advanced: GoogleAuth](#advanced-googleauth)
+- [Error Handling](#error-handling)
+- [Requirements](#requirements)
+
+
 ## Features
 
 - 🔐 **Multiple Auth Methods** - ADC, OAuth2, Service Account with auto-detection
