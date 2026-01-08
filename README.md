@@ -418,6 +418,43 @@ drive.delete_folder("folder_id")
 drive.delete_folder("folder_id", permanently=True)
 ```
 
+### Sharing
+
+```python
+from pydrive4 import GoogleDrive
+
+drive = GoogleDrive()
+
+# Upload and make public in one call
+result = drive.upload_file("document.pdf", public=True)
+print(f"Share link: {result['link']}")
+
+# Create a public folder
+folder = drive.create_folder("Shared Files", public=True)
+print(f"Folder link: {folder['link']}")
+
+# Share with specific person
+drive.share("file_id", email="colleague@example.com", role="writer")
+
+# Make an existing file public
+drive.share("file_id", public=True)
+
+# Remove public access
+drive.unshare("file_id", remove_public=True)
+
+# Remove specific person's access
+drive.unshare("file_id", email="colleague@example.com")
+
+# Check who has access
+perms = drive.list_permissions("file_id")
+for p in perms["permissions"]:
+    print(f"{p.get('emailAddress', 'anyone')}: {p['role']}")
+
+# Get shareable link
+link_info = drive.get_share_link("file_id")
+print(f"Link: {link_info['link']}, Public: {link_info['is_public']}")
+```
+
 ---
 
 ## Advanced: GoogleAuth
