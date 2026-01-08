@@ -92,13 +92,47 @@ ADC (Application Default Credentials) checks these locations in order:
 
 Best for servers, bots, and CI/CD pipelines. **No user interaction needed.**
 
-#### Setup
+#### Step-by-Step Setup
 
+**Step 1: Create a Google Cloud Project**
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create project → Enable **Google Drive API**
-3. Go to **IAM & Admin** → **Service Accounts**
-4. Create Service Account → Go to **Keys** → **Add Key** → **JSON**
-5. Download and save as `service_account.json`
+2. Click the project dropdown at the top → **New Project**
+3. Enter a project name (e.g., "My Drive App") → **Create**
+4. Wait for the project to be created, then select it
+
+**Step 2: Enable Google Drive API**
+1. Go to **APIs & Services** → **Library** (or [click here](https://console.cloud.google.com/apis/library))
+2. Search for "**Google Drive API**"
+3. Click on it → Click **Enable**
+
+**Step 3: Create Service Account**
+1. Go to **IAM & Admin** → **Service Accounts** (or [click here](https://console.cloud.google.com/iam-admin/serviceaccounts))
+2. Click **+ Create Service Account**
+3. Enter a name (e.g., "drive-bot") → Click **Create and Continue**
+4. Skip the optional steps → Click **Done**
+
+**Step 4: Create JSON Key**
+1. Click on the service account you just created
+2. Go to the **Keys** tab
+3. Click **Add Key** → **Create new key**
+4. Select **JSON** → Click **Create**
+5. A JSON file downloads automatically
+6. Rename it to `service_account.json` and move to your project folder
+
+#### Troubleshooting: Organization Policy Error
+
+If you see this error:
+```
+An organisation policy that blocks service accounts key creation has been enforced
+Policy: iam.disableServiceAccountKeyCreation
+```
+
+**This means your organization has disabled service account key creation for security.**
+
+**Solutions:**
+1. **Use OAuth2 instead** (Method 3 below) - Recommended for personal use
+2. **Use Application Default Credentials** (Method 1) - Run `gcloud auth application-default login`
+3. **Contact your admin** to request an exception for the `iam.disableServiceAccountKeyCreation` policy
 
 #### Usage
 
@@ -106,10 +140,10 @@ Best for servers, bots, and CI/CD pipelines. **No user interaction needed.**
 from pydrive4 import GoogleDrive
 
 # Auto-detect (if file is named service_account.json in current dir)
-client = GoogleDrive()
+drive = GoogleDrive()
 
 # Or explicit
-client = GoogleDrive(
+drive = GoogleDrive(
     credentials_name="service_account.json",
     service_account=True
 )
@@ -124,21 +158,47 @@ client = GoogleDrive(
 | Best for | Personal scripts | Servers, automation |
 | Access | All your files | Only files shared with it |
 
-> **Important**: Service accounts have their own empty Drive. To access your files, share folders with the service account email (e.g., `name@project.iam.gserviceaccount.com`).
+> **Important**: Service accounts have their own empty Drive. To access your files, share folders with the service account email (e.g., `my-bot@my-project.iam.gserviceaccount.com`).
 
 ---
 
-### Method 3: OAuth2 Client Credentials
+### Method 3: OAuth2 Client Credentials (Recommended for Personal Use)
 
-For desktop apps where a user authorizes access to their Drive.
+For desktop apps where you want to access **your own Google Drive files**. Opens browser once for authorization.
 
-#### Setup
+#### Step-by-Step Setup
 
+**Step 1: Create a Google Cloud Project**
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create project → Enable **Google Drive API**
-3. Go to **APIs & Services** → **Credentials**
-4. **Create Credentials** → **OAuth client ID** → **Desktop app**
-5. Download JSON as `client_secrets.json`
+2. Click the project dropdown at the top → **New Project**
+3. Enter a project name → **Create**
+4. Wait for the project to be created, then select it
+
+**Step 2: Enable Google Drive API**
+1. Go to **APIs & Services** → **Library**
+2. Search for "**Google Drive API**"
+3. Click on it → Click **Enable**
+
+**Step 3: Configure OAuth Consent Screen**
+1. Go to **APIs & Services** → **OAuth consent screen**
+2. Select **External** (or Internal if using Google Workspace) → **Create**
+3. Fill in required fields:
+   - App name: Your app name
+   - User support email: Your email
+   - Developer contact: Your email
+4. Click **Save and Continue**
+5. On Scopes page → Click **Save and Continue**
+6. On Test users page → Click **Add Users** → Add your email → **Save and Continue**
+7. Click **Back to Dashboard**
+
+**Step 4: Create OAuth Client ID**
+1. Go to **APIs & Services** → **Credentials**
+2. Click **+ Create Credentials** → **OAuth client ID**
+3. Application type: **Desktop app**
+4. Name: Any name (e.g., "PyDrive4")
+5. Click **Create**
+6. Click **Download JSON** (or the download icon)
+7. Rename to `client_secrets.json` and move to your project folder
 
 #### Usage
 
@@ -146,13 +206,13 @@ For desktop apps where a user authorizes access to their Drive.
 from pydrive4 import GoogleDrive
 
 # Auto-detect (if file is in current directory)
-client = GoogleDrive()
+drive = GoogleDrive()
 
 # Or explicit
-client = GoogleDrive(credentials_name="client_secrets.json")
+drive = GoogleDrive(credentials_name="client_secrets.json")
 ```
 
-On first run, a browser opens for authorization. The token is cached in `token.json`.
+**First run**: A browser window opens asking you to authorize the app. After authorizing, tokens are saved to `token.json` for future use (no browser needed again).
 
 ---
 
