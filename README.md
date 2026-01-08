@@ -1,11 +1,13 @@
+[![Python](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![Downloads](https://static.pepy.tech/badge/pydrive4)](https://pepy.tech/project/pydrive4)
+[![Downloads](https://static.pepy.tech/badge/pydrive4/month)](https://pepy.tech/project/pydrive4)
+[![Downloads](https://static.pepy.tech/badge/pydrive4/week)](https://pepy.tech/project/pydrive4)
+
 # PyDrive4
 
 **PyDrive4 is a wrapper library of google-api-python-client that simplifies many common Google Drive API V3 tasks.**
 
 A modern, actively maintained Python library for Google Drive. Inspired by [PyDrive](https://pypi.python.org/pypi/PyDrive) and [PyDrive2](https://github.com/iterative/PyDrive2), rebuilt from scratch for Google Drive API V3 with simplified authentication and cleaner API.
-
-[![Python](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 PyDrive4 makes it easy to interact with Google Drive from Python. It wraps the `google-api-python-client` to provide a clean, intuitive API for common file and folder operations.
 
@@ -23,7 +25,6 @@ PyDrive4 makes it easy to interact with Google Drive from Python. It wraps the `
 - [Advanced: GoogleAuth](#advanced-googleauth)
 - [Error Handling](#error-handling)
 - [Requirements](#requirements)
-
 
 ## Features
 
@@ -68,11 +69,11 @@ print(f"Found {files['count']} files")
 
 PyDrive4 supports multiple authentication methods, ordered by recommendation:
 
-| Method | Best For | Setup Required |
-|--------|----------|----------------|
-| **1. Application Default Credentials** | Local dev, Google Cloud | `gcloud` CLI |
-| **2. Service Account** | Servers, automation, bots | JSON key file |
-| **3. OAuth2 Client** | Personal scripts, desktop apps | JSON + browser auth |
+| Method                                 | Best For                       | Setup Required      |
+| -------------------------------------- | ------------------------------ | ------------------- |
+| **1. Application Default Credentials** | Local dev, Google Cloud        | `gcloud` CLI        |
+| **2. Service Account**                 | Servers, automation, bots      | JSON key file       |
+| **3. OAuth2 Client**                   | Personal scripts, desktop apps | JSON + browser auth |
 
 ---
 
@@ -85,11 +86,13 @@ The **easiest** method for local development. No JSON files to manage!
 1. Install [Google Cloud SDK](https://cloud.google.com/sdk/docs/install)
 
 2. Login with your Google account:
+
 ```bash
 gcloud auth application-default login
 ```
 
 3. That's it! Now just use:
+
 ```python
 from pydrive4 import GoogleDrive
 
@@ -100,6 +103,7 @@ files = client.list_files()
 #### How it Works
 
 ADC (Application Default Credentials) checks these locations in order:
+
 1. `GOOGLE_APPLICATION_CREDENTIALS` environment variable
 2. `gcloud auth application-default login` credentials
 3. Google Cloud metadata service (on GCE, Cloud Run, etc.)
@@ -113,23 +117,27 @@ Best for servers, bots, and CI/CD pipelines. **No user interaction needed.**
 #### Step-by-Step Setup
 
 **Step 1: Create a Google Cloud Project**
+
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
 2. Click the project dropdown at the top → **New Project**
 3. Enter a project name (e.g., "My Drive App") → **Create**
 4. Wait for the project to be created, then select it
 
 **Step 2: Enable Google Drive API**
+
 1. Go to **APIs & Services** → **Library** (or [click here](https://console.cloud.google.com/apis/library))
 2. Search for "**Google Drive API**"
 3. Click on it → Click **Enable**
 
 **Step 3: Create Service Account**
+
 1. Go to **IAM & Admin** → **Service Accounts** (or [click here](https://console.cloud.google.com/iam-admin/serviceaccounts))
 2. Click **+ Create Service Account**
 3. Enter a name (e.g., "drive-bot") → Click **Create and Continue**
 4. Skip the optional steps → Click **Done**
 
 **Step 4: Create JSON Key**
+
 1. Click on the service account you just created
 2. Go to the **Keys** tab
 3. Click **Add Key** → **Create new key**
@@ -140,6 +148,7 @@ Best for servers, bots, and CI/CD pipelines. **No user interaction needed.**
 #### Troubleshooting: Organization Policy Error
 
 If you see this error:
+
 ```
 An organisation policy that blocks service accounts key creation has been enforced
 Policy: iam.disableServiceAccountKeyCreation
@@ -148,6 +157,7 @@ Policy: iam.disableServiceAccountKeyCreation
 **This means your organization has disabled service account key creation for security.**
 
 **Solutions:**
+
 1. **Use OAuth2 instead** (Method 3 below) - Recommended for personal use
 2. **Use Application Default Credentials** (Method 1) - Run `gcloud auth application-default login`
 3. **Contact your admin** to request an exception for the `iam.disableServiceAccountKeyCreation` policy
@@ -169,12 +179,12 @@ drive = GoogleDrive(
 
 #### What is `service_account=True`?
 
-| Aspect | OAuth2 | Service Account |
-|--------|--------|-----------------|
-| Browser needed | Yes (first time) | No |
-| Whose Drive? | Your personal Drive | Service account's own Drive |
-| Best for | Personal scripts | Servers, automation |
-| Access | All your files | Only files shared with it |
+| Aspect         | OAuth2              | Service Account             |
+| -------------- | ------------------- | --------------------------- |
+| Browser needed | Yes (first time)    | No                          |
+| Whose Drive?   | Your personal Drive | Service account's own Drive |
+| Best for       | Personal scripts    | Servers, automation         |
+| Access         | All your files      | Only files shared with it   |
 
 > **Important**: Service accounts have their own empty Drive. To access your files, share folders with the service account email (e.g., `my-bot@my-project.iam.gserviceaccount.com`).
 
@@ -187,17 +197,20 @@ For desktop apps where you want to access **your own Google Drive files**. Opens
 #### Step-by-Step Setup
 
 **Step 1: Create a Google Cloud Project**
+
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
 2. Click the project dropdown at the top → **New Project**
 3. Enter a project name → **Create**
 4. Wait for the project to be created, then select it
 
 **Step 2: Enable Google Drive API**
+
 1. Go to **APIs & Services** → **Library**
 2. Search for "**Google Drive API**"
 3. Click on it → Click **Enable**
 
 **Step 3: Configure OAuth Consent Screen**
+
 1. Go to **APIs & Services** → **OAuth consent screen**
 2. Select **External** (or Internal if using Google Workspace) → **Create**
 3. Fill in required fields:
@@ -210,6 +223,7 @@ For desktop apps where you want to access **your own Google Drive files**. Opens
 7. Click **Back to Dashboard**
 
 **Step 4: Create OAuth Client ID**
+
 1. Go to **APIs & Services** → **Credentials**
 2. Click **+ Create Credentials** → **OAuth client ID**
 3. Application type: **Desktop app**
@@ -250,6 +264,7 @@ set GOOGLE_APPLICATION_CREDENTIALS=C:\path\to\credentials.json
 ```
 
 Then:
+
 ```python
 client = GoogleDrive()  # Automatically uses the env variable
 ```
@@ -285,20 +300,20 @@ GoogleDrive(
 
 ### Methods
 
-| Method | Description | Returns |
-|--------|-------------|---------|
-| `list_files(folder_id, trashed)` | List files in a folder | `{"success": bool, "files": list, "count": int}` |
-| `list_folders(parent_id, trashed)` | List folders | `{"success": bool, "folders": list, "count": int}` |
-| `search_files(query, folder_id)` | Search files by name | `{"success": bool, "files": list, "count": int}` |
-| `search_folders(query, parent_id)` | Search folders by name | `{"success": bool, "folders": list, "count": int}` |
-| `get_folder(name, parent_id)` | Get folder by exact name | `{"success": bool, "folder": dict, "found": bool}` |
-| `create_folder(name, parent_id)` | Create a folder | `{"success": bool, "folder": dict, "id": str}` |
-| `upload_file(path, folder_id, overwrite)` | Upload a file | `{"success": bool, "file": dict, "id": str}` |
-| `download_file(file_id, output_path)` | Download a file | `{"success": bool, "path": str, "size": int}` |
-| `upload_folder(path, parent_id)` | Upload folder recursively | `{"success": bool, "files_uploaded": int}` |
-| `delete_file(file_id, permanently)` | Delete/trash a file | `{"success": bool}` |
-| `delete_folder(folder_id, permanently)` | Delete/trash a folder | `{"success": bool}` |
-| `delete_item(item_id, permanently)` | Delete/trash any item | `{"success": bool}` |
+| Method                                    | Description               | Returns                                            |
+| ----------------------------------------- | ------------------------- | -------------------------------------------------- |
+| `list_files(folder_id, trashed)`          | List files in a folder    | `{"success": bool, "files": list, "count": int}`   |
+| `list_folders(parent_id, trashed)`        | List folders              | `{"success": bool, "folders": list, "count": int}` |
+| `search_files(query, folder_id)`          | Search files by name      | `{"success": bool, "files": list, "count": int}`   |
+| `search_folders(query, parent_id)`        | Search folders by name    | `{"success": bool, "folders": list, "count": int}` |
+| `get_folder(name, parent_id)`             | Get folder by exact name  | `{"success": bool, "folder": dict, "found": bool}` |
+| `create_folder(name, parent_id)`          | Create a folder           | `{"success": bool, "folder": dict, "id": str}`     |
+| `upload_file(path, folder_id, overwrite)` | Upload a file             | `{"success": bool, "file": dict, "id": str}`       |
+| `download_file(file_id, output_path)`     | Download a file           | `{"success": bool, "path": str, "size": int}`      |
+| `upload_folder(path, parent_id)`          | Upload folder recursively | `{"success": bool, "files_uploaded": int}`         |
+| `delete_file(file_id, permanently)`       | Delete/trash a file       | `{"success": bool}`                                |
+| `delete_folder(folder_id, permanently)`   | Delete/trash a folder     | `{"success": bool}`                                |
+| `delete_item(item_id, permanently)`       | Delete/trash any item     | `{"success": bool}`                                |
 
 ---
 
@@ -400,10 +415,10 @@ drive.delete_folder("folder_id", permanently=True)
 
 **Most users don't need it!** `GoogleDrive()` auto-authenticates for you.
 
-| Approach | When to use |
-|----------|-------------|
-| `drive = GoogleDrive()` | ✅ **Recommended** - handles everything automatically |
-| `auth = GoogleAuth()` + `GoogleDrive(auth=auth)` | Only for advanced control |
+| Approach                                         | When to use                                           |
+| ------------------------------------------------ | ----------------------------------------------------- |
+| `drive = GoogleDrive()`                          | ✅ **Recommended** - handles everything automatically |
+| `auth = GoogleAuth()` + `GoogleDrive(auth=auth)` | Only for advanced control                             |
 
 ### When to Use GoogleAuth Separately
 
@@ -475,6 +490,7 @@ else:
 ```
 
 Clean error messages:
+
 ```
 ❌ InvalidCredentialsError: No credentials available. Options:
   1. Run: gcloud auth application-default login
