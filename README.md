@@ -370,31 +370,67 @@ client.delete_item("item_id", permanently=True)
 
 ## Advanced: GoogleAuth
 
-For more control over authentication:
+### Do I Need GoogleAuth?
+
+**Most users don't need it!** `GoogleDrive()` auto-authenticates for you.
+
+| Approach | When to use |
+|----------|-------------|
+| `drive = GoogleDrive()` | ✅ **Recommended** - handles everything automatically |
+| `auth = GoogleAuth()` + `GoogleDrive(auth=auth)` | Only for advanced control |
+
+### When to Use GoogleAuth Separately
+
+Use `GoogleAuth` directly when you need to:
+
+1. **Check authentication status before operations**
+2. **Switch between multiple accounts**
+3. **Revoke tokens programmatically**
+4. **Get the raw Drive API service**
+
+### GoogleAuth Examples
 
 ```python
 from pydrive4 import GoogleAuth, GoogleDrive
 
-# Manual auth
-auth = GoogleAuth(credentials_file="creds.json")
+# Create auth with specific credentials
+auth = GoogleAuth(credentials_file="client_secrets.json")
 auth.authenticate()
-
-# Pass to client
-client = GoogleDrive(auth=auth)
 
 # Check status
 print(f"Authenticated: {auth.is_authenticated}")
 print(f"Using ADC: {auth.is_adc}")
 print(f"Using Service Account: {auth.is_service_account}")
+
+# Pass to drive client
+drive = GoogleDrive(auth=auth)
 ```
 
-Or use the convenience function:
+### Revoke Tokens
 
 ```python
-from pydrive4 import authenticate
+auth = GoogleAuth()
+auth.authenticate()
 
-auth = authenticate()  # Auto-detect and authenticate
-drive = auth.get_drive_service()  # Get raw Drive API service
+# Later, revoke access and delete cached token
+auth.revoke()
+```
+
+### Get Raw Drive API Service
+
+For direct API access without the PyDrive4 wrapper:
+
+```python
+from pydrive4 import GoogleAuth
+
+auth = GoogleAuth()
+auth.authenticate()
+
+# Get the raw googleapiclient service
+service = auth.get_drive_service()
+
+# Use raw API
+results = service.files().list(pageSize=10).execute()
 ```
 
 ---
