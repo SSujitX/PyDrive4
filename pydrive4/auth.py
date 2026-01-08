@@ -56,15 +56,22 @@ def _auto_detect_credentials() -> tuple[Optional[str], bool]:
     Returns:
         Tuple of (credentials_path, is_service_account)
     """
+    from glob import glob
+    
     # First check for service account files
     for filename in AUTO_DETECT_SERVICE_ACCOUNT_FILES:
         if Path(filename).exists():
             return filename, True
     
-    # Then check for OAuth2 files
+    # Then check for OAuth2 files (exact names)
     for filename in AUTO_DETECT_OAUTH_FILES:
         if Path(filename).exists():
             return filename, False
+    
+    # Check for client_secret_*.json pattern (Google's default download name)
+    client_secret_files = glob("client_secret_*.json")
+    if client_secret_files:
+        return client_secret_files[0], False
     
     return None, False
 
