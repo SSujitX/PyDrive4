@@ -651,10 +651,10 @@ class GoogleDrive:
 
         Example:
             # Move to trash
-            client.delete_item("abc123")
+            drive.delete_item("abc123")
 
             # Delete permanently
-            client.delete_item("abc123", permanently=True)
+            drive.delete_item("abc123", permanently=True)
         """
         try:
             if permanently:
@@ -676,6 +676,53 @@ class GoogleDrive:
                     "error": f"Item not found: {item_id}",
                 }
             return self._handle_http_error(e)
+
+    def delete_file(self, file_id: str, permanently: bool = False) -> Dict[str, Any]:
+        """
+        Delete or trash a file.
+
+        Args:
+            file_id: ID of the file to delete.
+            permanently: If True, delete permanently. If False, move to trash.
+
+        Returns:
+            Dict containing:
+                - success: bool
+                - permanently_deleted: bool indicating deletion type
+
+        Example:
+            # Move file to trash
+            drive.delete_file("file_id_here")
+
+            # Delete file permanently
+            drive.delete_file("file_id_here", permanently=True)
+        """
+        return self.delete_item(file_id, permanently)
+
+    def delete_folder(self, folder_id: str, permanently: bool = False) -> Dict[str, Any]:
+        """
+        Delete or trash a folder and all its contents.
+
+        Args:
+            folder_id: ID of the folder to delete.
+            permanently: If True, delete permanently. If False, move to trash.
+
+        Returns:
+            Dict containing:
+                - success: bool
+                - permanently_deleted: bool indicating deletion type
+
+        Warning:
+            Deleting a folder also deletes all files and subfolders inside it!
+
+        Example:
+            # Move folder to trash
+            drive.delete_folder("folder_id_here")
+
+            # Delete folder permanently (cannot be recovered!)
+            drive.delete_folder("folder_id_here", permanently=True)
+        """
+        return self.delete_item(folder_id, permanently)
 
     # =========================================================================
     # HELPER METHODS
