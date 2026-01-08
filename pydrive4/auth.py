@@ -313,11 +313,18 @@ class GoogleAuth:
             if not creds:
                 if not self.credentials_file:
                     raise InvalidCredentialsError(
-                        message="No credentials available. Options:\n"
-                        "  1. Run: gcloud auth application-default login\n"
-                        "  2. Place 'client_secrets.json' in current directory\n"
-                        "  3. Set GOOGLE_APPLICATION_CREDENTIALS environment variable\n"
-                        "  Get credentials from: https://console.cloud.google.com/apis/credentials"
+                        message="No credentials available. Choose one of these methods:\n"
+                        "\n"
+                        "  Method 1: Application Default Credentials (ADC)\n"
+                        "    → Run: gcloud auth application-default login\n"
+                        "\n"
+                        "  Method 2: Service Account (for automation)\n"
+                        "    → Place 'service_account.json' in current directory\n"
+                        "\n"
+                        "  Method 3: OAuth2 (for personal use)\n"
+                        "    → Place 'client_secrets.json' in current directory\n"
+                        "\n"
+                        "  Get credentials: https://console.cloud.google.com/apis/credentials"
                     )
 
                 credentials_path = Path(self.credentials_file)
