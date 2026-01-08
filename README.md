@@ -1,6 +1,8 @@
 # PyDrive4
 
-A simplified Google Drive API v3 wrapper library for Python.
+**PyDrive4 is a wrapper library of google-api-python-client that simplifies many common Google Drive API V3 tasks.**
+
+A modern, actively maintained Python library for Google Drive. Inspired by [PyDrive](https://pypi.python.org/pypi/PyDrive) and [PyDrive2](https://github.com/iterative/PyDrive2), rebuilt from scratch for Google Drive API V3 with simplified authentication and cleaner API.
 
 [![Python](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
