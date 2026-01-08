@@ -1,7 +1,14 @@
+[![PyPI version](https://img.shields.io/pypi/v/pydrive4.svg)](https://pypi.org/project/pydrive4/)
 [![Python](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Downloads](https://static.pepy.tech/badge/pydrive4)](https://pepy.tech/project/pydrive4)
 [![Downloads](https://static.pepy.tech/badge/pydrive4/month)](https://pepy.tech/project/pydrive4)
-[![Downloads](https://static.pepy.tech/badge/pydrive4/week)](https://pepy.tech/project/pydrive4)
+
+<p align="center">
+  <a href="https://github.com/SSujitX/pydrive4">GitHub</a> •
+  <a href="https://pypi.org/project/pydrive4/">PyPI</a> •
+  <a href="https://github.com/SSujitX/pydrive4/issues">Issues</a>
+</p>
 
 # PyDrive4
 
