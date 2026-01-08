@@ -501,3 +501,13 @@ Contributions are welcome! Please submit a Pull Request.
 ## Acknowledgments
 
 Inspired by [PyDrive2](https://github.com/iterative/PyDrive2), updated for Google Drive API v3.
+
+<p align="center">
+  <a href="https://www.star-history.com/#SSujitX/PyDrive4&Date">
+    <img src="https://api.star-history.com/svg?repos=SSujitX/PyDrive4&type=Date" width="500" alt="Star History">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2FSSujitX%2FPyDrive4"><img src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2FSSujitX%2FPyDrive4&countColor=%23263759" /></a>
+</p>
