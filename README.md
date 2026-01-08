@@ -296,7 +296,9 @@ GoogleDrive(
 | `upload_file(path, folder_id, overwrite)` | Upload a file | `{"success": bool, "file": dict, "id": str}` |
 | `download_file(file_id, output_path)` | Download a file | `{"success": bool, "path": str, "size": int}` |
 | `upload_folder(path, parent_id)` | Upload folder recursively | `{"success": bool, "files_uploaded": int}` |
-| `delete_item(item_id, permanently)` | Delete/trash an item | `{"success": bool}` |
+| `delete_file(file_id, permanently)` | Delete/trash a file | `{"success": bool}` |
+| `delete_folder(folder_id, permanently)` | Delete/trash a folder | `{"success": bool}` |
+| `delete_item(item_id, permanently)` | Delete/trash any item | `{"success": bool}` |
 
 ---
 
@@ -377,11 +379,17 @@ print(f"Uploaded {result['files_uploaded']} files")
 ### Delete
 
 ```python
-# Move to trash
-client.delete_item("item_id")
+# Delete a file (move to trash)
+drive.delete_file("file_id")
 
-# Delete permanently
-client.delete_item("item_id", permanently=True)
+# Delete a file permanently
+drive.delete_file("file_id", permanently=True)
+
+# Delete a folder (move to trash)
+drive.delete_folder("folder_id")
+
+# Delete a folder permanently (deletes all contents!)
+drive.delete_folder("folder_id", permanently=True)
 ```
 
 ---
