@@ -37,7 +37,7 @@ Authentication Methods:
        GoogleDrive(credentials_name="path/to/creds.json")
 """
 
-from pydrive4.client import GoogleDrive
+from pydrive4.drive import GoogleDrive, GoogleDriveClient
 from pydrive4.auth import GoogleAuth, authenticate
 from pydrive4.exceptions import (
     PyDrive4Error,
@@ -59,13 +59,10 @@ enable_clean_errors()
 __version__ = "0.1.0"
 __author__ = "PyDrive4 Contributors"
 
-# Alias for backwards compatibility
-GoogleDriveClient = GoogleDrive
-
 __all__ = [
     # Main classes
     "GoogleDrive",
-    "GoogleDriveClient",  # Alias
+    "GoogleDriveClient",  # Alias for backwards compatibility
     "GoogleAuth",
     # Convenience functions
     "authenticate",
