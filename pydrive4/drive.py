@@ -15,6 +15,7 @@ from pydrive4.operations.base import BaseOperationsMixin
 from pydrive4.operations.files import FileOperationsMixin
 from pydrive4.operations.folders import FolderOperationsMixin
 from pydrive4.operations.bulk import BulkOperationsMixin
+from pydrive4.operations.sharing import SharingOperationsMixin
 
 
 class GoogleDrive(
@@ -22,6 +23,7 @@ class GoogleDrive(
     FileOperationsMixin,
     FolderOperationsMixin,
     BulkOperationsMixin,
+    SharingOperationsMixin,
 ):
     """
     Main client for Google Drive API v3 operations.
@@ -31,6 +33,7 @@ class GoogleDrive(
     - Searching files and folders
     - Creating folders
     - Uploading and downloading files
+    - Sharing files and folders
     - Deleting items (trash or permanent)
 
     Args:
